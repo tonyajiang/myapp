@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('app', ['ionic', 'firebase', 'app.controllers', 'app.routes', 'app.directives','app.services',])
+angular.module('app', ['ionic', 'firebase', 'app.controllers', 'app.routes', 'app.directives','app.services'])
 
 .config(function($ionicConfigProvider, $sceDelegateProvider){
 
@@ -26,6 +26,33 @@ angular.module('app', ['ionic', 'firebase', 'app.controllers', 'app.routes', 'ap
       StatusBar.styleDefault();
     }
   });
+})
+
+
+.factory("Items", function($firebaseArray) {
+  var itemsRef = new Firebase("https://test-7422a.firebaseio.com/cars");
+  return $firebaseArray(itemsRef);
+})
+
+.controller("ListCtrl", function($scope, Items, $state) {
+  $scope.items = Items;
+  $scope.new = {};
+
+  $scope.addItem = function() {
+    console.log($scope.new);
+    if(Object.keys($scope.new).length != 0){
+      var time = new Date($scope.new.when);
+      time = time.format("shortTime");
+        $scope.items.$add({
+          "when": time,
+          "from": $scope.new.from,
+          "to":   $scope.new.to
+        });
+        $state.go('tabsController.available');
+    } else{
+      alert("Please fill out the form.");
+    }
+  };
 })
 
 /*
@@ -81,6 +108,7 @@ angular.module('app', ['ionic', 'firebase', 'app.controllers', 'app.routes', 'ap
     }
   };
 });
+
 
 //
 

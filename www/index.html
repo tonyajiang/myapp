@@ -24,33 +24,7 @@
 
     <script src="https://cdn.firebase.com/libs/firebaseui/2.6.0/firebaseui.js"></script>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.6.0/firebaseui.css" />
-    <script type="text/javascript">
-      // FirebaseUI config.
-      var uiConfig = {
-        signInSuccessUrl: '#/page1/page2',
-        signInOptions: [
-          // Leave the lines as is for the providers you want to offer your users.
-          // firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-          // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-          // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-          // firebase.auth.GithubAuthProvider.PROVIDER_ID,
-          // firebase.auth.PhoneAuthProvider.PROVIDER_ID,
-          firebase.auth.EmailAuthProvider.PROVIDER_ID
-        ],
-        credentialHelper: firebaseui.auth.CredentialHelper.NONE,
-        // Terms of service url.
-        tosUrl: '<your-tos-url>'
-
-      };
-
-      // Initialize the FirebaseUI Widget using Firebase.
-      var ui = new firebaseui.auth.AuthUI(firebase.auth());
-      // The start method will wait until the DOM is loaded.
-      ui.start('#firebaseui', uiConfig);
-      ui.disableAutoSignIn();
-      console.log("here");
-
-    </script>
+    <script src="js/firebaseUI.js"></script>
     <!--  -->
 
     <script src="lib/ionic/js/ionic.bundle.js"></script>
@@ -61,7 +35,7 @@
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
-
+    <script src="js/dateFormat.js"></script>
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
 
     <style type="text/css">

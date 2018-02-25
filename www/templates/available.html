@@ -1,8 +1,9 @@
-<ion-view title="Available" id="page4" ng-controller="ListCtrl">
+<ion-view title="Available" id="page4" ng-app="app" ng-controller="ListCtrl">
   <div id="firebaseui" style="display:none"></div>
   <ion-content padding="true" class="has-header">
     <ion-list id="available-list2">
-      <ion-item ng-repeat="item in items" ui-sref="tabsController.example()">
+      <!-- ui-sref="tabsController.example()" -->
+      <ion-item ng-repeat="item in items" ng-click="goToState(item)">
         Leaving at {{item.when}} - {{item.from}} to {{item.to}}
       </ion-item>
       <!-- <ion-item class="item-icon-left energized" id="available-list-item8" ui-sref="tabsController.example()">

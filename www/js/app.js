@@ -29,31 +29,9 @@ angular.module('app', ['ionic', 'firebase', 'app.controllers', 'app.routes', 'ap
 })
 
 
-.factory("Items", function($firebaseArray) {
-  var itemsRef = new Firebase("https://test-7422a.firebaseio.com/cars");
-  return $firebaseArray(itemsRef);
-})
 
-.controller("ListCtrl", function($scope, Items, $state) {
-  $scope.items = Items;
-  $scope.new = {};
 
-  $scope.addItem = function() {
-    console.log($scope.new);
-    if(Object.keys($scope.new).length != 0){
-      var time = new Date($scope.new.when);
-      time = time.format("shortTime");
-        $scope.items.$add({
-          "when": time,
-          "from": $scope.new.from,
-          "to":   $scope.new.to
-        });
-        $state.go('tabsController.available');
-    } else{
-      alert("Please fill out the form.");
-    }
-  };
-})
+
 
 /*
   This directive is used to disable the "drag to open" functionality of the Side-Menu

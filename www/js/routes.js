@@ -69,7 +69,10 @@ angular.module('app.routes', ['ionicUIRouter'])
         templateUrl: 'templates/example.html',
         controller: 'exampleCtrl'
       }
-    }
+    },
+    params: {
+       info : null
+   }
   })
 
   .state('login', {

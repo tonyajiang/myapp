@@ -1,4 +1,26 @@
-<ion-view title="Example" id="page5">
+<ion-view title="Example" id="page5" ng-app="app" ng-controller="exampleCtrl">
+  <ion-content padding="true" class="has-header">
+    <div class="list card" id="example-card21" ng-repeat="user in users">
+      <ion-item class="item-avatar" id="example-list-item21">
+        <img src={{user.img}}>
+        <h2>{{user.name}}</h2>
+        <p>{{user.year}}, {{user.school}}</p>
+      </ion-item>
+      <div class="item item-body" id="example-list-item-container2">
+        <div id="example-markdown2" class="show-list-numbers-and-dots">
+          <p style="margin-top:0px;color:#000000;">{{user.desc}}</p>
+        </div>
+      </div>
+      <ion-item class="item-icon-left dark" id="example-list-item22">
+        <i class="icon ion-chatboxes"></i>{{user.phone}}</ion-item>
+      <ion-item class="item-icon-left dark" id="example-list-item23">
+        <i class="icon ion-social-usd"></i>{{user.venmo}}</ion-item>
+    </div>
+    <button id="example-button15" class="button button-positive button-block">Join</button>
+  </ion-content>
+</ion-view>
+
+<!-- <ion-view title="Example" id="page5" ng-app="app" ng-controller="ListCtrl">
   <ion-content padding="true" class="has-header">
     <div class="list card" id="example-card21">
       <ion-item class="item-avatar" id="example-list-item21">
@@ -32,6 +54,6 @@
       <ion-item class="item-icon-left dark" id="example-list-item27">
         <i class="icon ion-social-usd"></i>Tonya-Jiang</ion-item>
     </div>
-    <button id="example-button15" class="button button-positive button-block">Join</button>
+    <button id="example-button15" class="button button-positive button-block" ng-click="joinCar()">Join</button>
   </ion-content>
-</ion-view>
+</ion-view> -->

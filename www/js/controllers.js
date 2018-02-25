@@ -19,6 +19,32 @@ angular.module('app.controllers', [])
     }
   ])
 
+  .controller("ListCtrl", function($scope, Items, $state) {
+    $scope.items = Items;
+    $scope.new = {};
+
+    $scope.addItem = function() {
+      console.log($scope.new);
+      if(Object.keys($scope.new).length != 0){
+        var time = new Date($scope.new.when);
+        time = time.format("shortTime");
+          $scope.items.$add({
+            "when": time,
+            "from": $scope.new.from,
+            "to":   $scope.new.to
+          });
+          $state.go('tabsController.available');
+      } else{
+        alert("Please fill out the form.");
+      }
+    };
+
+    $scope.goToState = function(info){
+      $scope.id = info["$id"];
+      $state.go('tabsController.example', { info });
+    }
+  })
+
   .controller('createCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
@@ -33,18 +59,17 @@ angular.module('app.controllers', [])
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
     function($scope, $stateParams) {
 
-
     }
   ])
 
-  .controller('exampleCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-    // You can include any angular dependencies as parameters for this function
-    // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function($scope, $stateParams) {
+  .controller('exampleCtrl',  function($scope, $stateParams, Users) {
+    $scope.params = $stateParams;
+    console.log($stateParams);
+    $scope.users = Users.get($scope.params["info"]["$id"]);
+    console.log($scope.users);
+    // TODO join a car. get User info from Users table and add it to the car
 
-
-    }
-  ])
+  })
 
   .controller('loginCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function

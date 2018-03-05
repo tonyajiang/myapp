@@ -99,6 +99,13 @@ angular.module('app.routes', ['ionicUIRouter'])
     controller: 'editCtrl'
   })
 
+  .state('chat', {
+    url: '/page10',
+    templateUrl: 'templates/chat.html',
+    controller: 'chatCtrl'
+  })
+
+
 $urlRouterProvider.otherwise('/page6')
 
 

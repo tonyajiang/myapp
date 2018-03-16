@@ -13,7 +13,7 @@ angular.module('app', ['ionic', 'firebase', 'app.controllers', 'app.routes', 'ap
 
 })
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -89,58 +89,3 @@ angular.module('app', ['ionic', 'firebase', 'app.controllers', 'app.routes', 'ap
 
 
 //
-
-
-/**
- * @return {string} The URL of the FirebaseUI standalone widget.
- */
-function getWidgetUrl() {
-  return '/widget#recaptcha=' + getRecaptchaMode();
-}
-
-var signInWithRedirect = function() {
-  window.location.assign(getWidgetUrl());
-};
-
-var initApp = function() {
-  document.getElementById('menuCtrl').style.visibility = "hidden";
-  document.getElementById('menu-list-item15').addEventListener('click', function() {
-   firebase.auth().signOut();
- });
-
- firebase.auth().onAuthStateChanged(function(user) {
-         if (user) {
-           // User is signed in.
-           document.getElementById('menuCtrl').style.visibility = "visible";
-           var displayName = user.displayName;
-           var email = user.email;
-           var emailVerified = user.emailVerified;
-           var photoURL = user.photoURL;
-           var uid = user.uid;
-           var phoneNumber = user.phoneNumber;
-           var providerData = user.providerData;
-           user.getIdToken().then(function(accessToken) {
-             // document.getElementById('sign-in-status').textContent = 'Signed in';
-             // document.getElementById('sign-in').textContent = 'Sign out';
-             // document.getElementById('account-details').textContent = JSON.stringify({
-             //   displayName: displayName,
-             //   email: email,
-             //   emailVerified: emailVerified,
-             //   phoneNumber: phoneNumber,
-             //   photoURL: photoURL,
-             //   uid: uid,
-             //   accessToken: accessToken,
-             //   providerData: providerData
-             // }, null, '  ');
-           });
-         } else {
-           // User is signed out.
-           // document.getElementById('sign-in-status').textContent = 'Signed out';
-           document.getElementById('menuCtrl').style.visibility = "hidden";
-           // document.getElementById('account-details').textContent = 'null';
-         }
-       });
-};
-
-
-window.addEventListener('load', initApp);

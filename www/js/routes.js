@@ -9,7 +9,7 @@ angular.module('app.routes', ['ionicUIRouter'])
   $stateProvider
 
 
-      .state('tabsController.welcome', {
+  .state('tabsController.welcome', {
     url: '/page2',
     views: {
       'tab1': {

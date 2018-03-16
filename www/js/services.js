@@ -3,6 +3,14 @@ angular.module('app.services', [])
 .factory("Items", function($firebaseArray) {
   var itemsRef = new Firebase("https://test-7422a.firebaseio.com/cars");
   return $firebaseArray(itemsRef);
+  // console.log("items")
+  // return {
+  //   get: function(find){
+  //     console.log(find.from);
+  //     var ref = new Firebase("https://test-7422a.firebaseio.com/cars");
+  //     return $firebaseArray(ref.orderByChild("from").startAt(find.from));
+  //   }
+  // }
 })
 
 .factory("Users", function($firebaseArray) {

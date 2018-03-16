@@ -1,10 +1,10 @@
-<ion-view title="Welcome" id="page2">
+<ion-view title="Welcome" id="page2" ng-app="app" ng-controller="welcomeCtrl">
   <ion-content padding="true" class="has-header">
     <h1 id="welcome-heading1" style="color:#000000;">Find a car</h1>
     <form id="welcome-form1" class="list">
       <label class="item item-select" id="welcome-select1">
         <span class="input-label">From</span>
-        <select>
+        <select ng-model="findParams.from">
           <option>Clock Tower</option>
           <option>Village House</option>
           <option>Brookings Steps</option>
@@ -18,7 +18,7 @@
       </label>
       <label class="item item-select" id="welcome-select2">
         <span class="input-label">To</span>
-        <select>
+        <select ng-model="findParams.to">
           <option>Clock Tower</option>
           <option>Village House</option>
           <option>Brookings Steps</option>
@@ -36,9 +36,9 @@
     <form id="welcome-form3" class="list">
       <label class="item item-input" id="welcome-input4">
         <span class="input-label">around</span>
-        <input type="time" placeholder="12:00">
+        <input type="time" placeholder="12:00" ng-model="findParams.when">
       </label>
     </form>
-    <a ui-sref="tabsController.available()" id="welcome-button7" class="button button-positive button-block">Submit</a>
+    <a ui-sref="tabsController.available()" id="welcome-button7" class="button button-positive button-block" ng-click="find()">Submit</a>
   </ion-content>
 </ion-view>

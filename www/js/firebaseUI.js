@@ -1,6 +1,6 @@
 // FirebaseUI config.
 var uiConfig = {
-  signInSuccessUrl: '#/page1/page2',
+  signInSuccessUrl: '#/page1/page4',
   signInOptions: [
     firebase.auth.EmailAuthProvider.PROVIDER_ID
   ],

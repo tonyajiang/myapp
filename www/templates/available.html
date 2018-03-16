@@ -1,9 +1,21 @@
 <ion-view title="Available" id="page4" ng-app="app" ng-controller="ListCtrl">
   <div id="firebaseui" style="display:none"></div>
   <ion-content padding="true" class="has-header">
+    <p>
+      From:
+      <input type="text" ng-model="find.from">
+    </p>
+    <p>
+      To:
+      <input type="text" ng-model="find.to">
+    </p>
+    <p>
+      When:
+      <input type="text" ng-model="find.when">
+    </p>
     <ion-list id="available-list2">
       <!-- ui-sref="tabsController.example()" -->
-      <ion-item ng-repeat="item in items" ng-click="goToState(item)">
+      <ion-item ng-repeat="item in items | filter : find" ng-click="goToState(item)">
         Leaving at {{item.when}} - {{item.from}} to {{item.to}}
       </ion-item>
       <!-- <ion-item class="item-icon-left energized" id="available-list-item8" ui-sref="tabsController.example()">

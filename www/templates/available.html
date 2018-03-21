@@ -1,17 +1,16 @@
 <ion-view title="Available" id="page4" ng-app="app" ng-controller="ListCtrl">
   <ion-content padding="true" class="has-header">
-    <p>
-      From:
-      <input type="text" ng-model="find.from">
-    </p>
-    <p>
-      To:
-      <input type="text" ng-model="find.to">
-    </p>
-    <p>
-      When:
-      <input type="text" ng-model="find.when">
-    </p>
+    <div class="row responsive-sm">
+      <div class="col">
+        <input type="text" placeholder="From" ng-model="find.from">
+      </div>
+      <div class="col">
+        <input type="text" placeholder="To" ng-model="find.to">
+      </div>
+      <div class="col">
+        <input type="text" placeholder="When" ng-model="find.when">
+      </div>
+    </div>
     <ion-list id="available-list2">
       <!-- ui-sref="tabsController.example()" -->
       <ion-item ng-repeat="item in items | filter : find" ng-click="goToState(item)">

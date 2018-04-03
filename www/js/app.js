@@ -7,13 +7,13 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('app', ['ionic', 'firebase', 'app.controllers', 'app.routes', 'app.directives','app.services'])
 
-.config(function($ionicConfigProvider, $sceDelegateProvider){
+.config(function($ionicConfigProvider, $sceDelegateProvider, $urlRouterProvider){
 
   $sceDelegateProvider.resourceUrlWhitelist([ 'self','*://www.youtube.com/**', '*://player.vimeo.com/video/**']);
-
+  $urlRouterProvider.deferIntercept();
 })
 
-.run(function($ionicPlatform, $rootScope) {
+.run(['$ionicPlatform', '$state', '$rootScope', function($ionicPlatform, $rootScope) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -26,7 +26,21 @@ angular.module('app', ['ionic', 'firebase', 'app.controllers', 'app.routes', 'ap
       StatusBar.styleDefault();
     }
   });
-})
+}])
+.run(['$rootScope', '$urlRouter', 'UserService', '$location', function ($rootScope, $urlRouter, UserService, $location) {
+
+   $rootScope.$on('$locationChangeSuccess', function(e) {
+     // UserService is an example service for managing user state
+     if (UserService.isLoggedIn()) {
+       return;
+     } else {
+        $location.path("/page6");
+     }
+   });
+
+   // Configures $urlRouter's listener *after* your custom listener
+   $urlRouter.listen();
+ }])
 
 
 

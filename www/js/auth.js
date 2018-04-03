@@ -23,24 +23,23 @@ var initApp = function() {
            var providerData = user.providerData;
            user.getIdToken().then(function(accessToken) {
              document.getElementById('sign-in-status').textContent = 'Signed in';
-             // document.getElementById('sign-in').textContent = 'Sign out';
-             // document.getElementById('account-details').textContent = JSON.stringify({
-             //   displayName: displayName,
-             //   email: email,
-             //   emailVerified: emailVerified,
-             //   phoneNumber: phoneNumber,
-             //   photoURL: photoURL,
-             //   uid: uid,
-             //   accessToken: accessToken,
-             //   providerData: providerData
-             // }, null, '  ');
+             document.getElementById('account-details').textContent = JSON.stringify({
+               displayName: displayName,
+               email: email,
+               emailVerified: emailVerified,
+               phoneNumber: phoneNumber,
+               photoURL: photoURL,
+               uid: uid,
+               accessToken: accessToken,
+               providerData: providerData
+             }, null, '  ');
            });
          } else {
            // User is signed out.
            firebase.auth().signOut();
            window.location = "/#/page6";
            document.getElementById('sign-in-status').textContent = 'Signed out';
-           // document.getElementById('account-details').textContent = 'null';
+           document.getElementById('account-details').textContent = 'null';
          }
        });
 };

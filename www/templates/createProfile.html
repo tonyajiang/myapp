@@ -1,4 +1,4 @@
-<ion-view title="Create Profile" id="page8">
+<ion-view title="Create Profile" id="page8" ng-controller="createProfileCtrl">
   <ion-content padding="true" class="has-header">
     <h1 id="createProfile-heading10" style="color:#000000;">Finish Your Profile</h1>
     <div style="margin: 0px; line-height: 250px; background-color: rgb(232, 235, 239); text-align: center;">
@@ -6,18 +6,30 @@
     </div>
     <form id="createProfile-form7" class="list">
       <label class="item item-input" id="createProfile-input12">
+        <span class="input-label">Name</span>
+        <input type="text" placeholder="" ng-model="new_profile.name">
+      </label>
+      <label class="item item-input" id="createProfile-input12">
         <span class="input-label">Description</span>
-        <input type="text" placeholder="">
+        <input type="text" placeholder="" ng-model="new_profile.desc">
       </label>
       <label class="item item-input" id="createProfile-input13">
         <span class="input-label">Cell Phone</span>
-        <input type="tel" placeholder="">
+        <input type="tel" placeholder="" ng-model="new_profile.phone">
       </label>
-      <label class="item item-input" id="createProfile-input14">
+      <label class="item item-input" id="createProfile-input12">
         <span class="input-label">Venmo</span>
-        <input type="text" placeholder="">
+        <input type="text" placeholder="" ng-model="new_profile.venmo">
       </label>
-      <a ui-sref="tabsController.welcome()" id="createProfile-button16" class="button button-positive button-block">Done!</a>
+      <label class="item item-input" id="createProfile-input12">
+        <span class="input-label">School</span>
+        <input type="text" placeholder="" ng-model="new_profile.school">
+      </label>
+      <label class="item item-input" id="createProfile-input12">
+        <span class="input-label">Year</span>
+        <input type="text" placeholder="" ng-model="new_profile.year">
+      </label>
+      <a ui-sref="tabsController.welcome()" id="createProfile-button16" class="button button-positive button-block" ng-click="addProfile()">Done!</a>
     </form>
   </ion-content>
 </ion-view>

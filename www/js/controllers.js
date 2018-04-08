@@ -13,8 +13,56 @@ angular.module('app.controllers', [])
   .controller('welcomeCtrl', function($scope, $state) {
   })
 
-  .controller("ListCtrl", function($scope, Items, $state, $stateParams, Users, $firebaseObject) {
-    $scope.items = Items;
+  .controller('myCarCtrl', function($scope, $state, $firebaseObject, $firebaseArray) {
+    var curr = JSON.parse(document.getElementById('account-details').textContent);
+    firebase.database().ref('users/'+ curr.uid).once('value').then(function(snapshot) {
+      var carId = snapshot.val().currentCar;
+      var car_firebase = new Firebase("https://test-7422a.firebaseio.com/cars/"+carId+"/users");
+      $scope.users = $firebaseArray(car_firebase);
+    });
+
+    $scope.$on('$locationChangeStart', function(event) {
+      var curr = JSON.parse(document.getElementById('account-details').textContent);
+      firebase.database().ref('users/'+ curr.uid).once('value').then(function(snapshot) {
+        var carId = snapshot.val().currentCar;
+        var car_firebase = new Firebase("https://test-7422a.firebaseio.com/cars/"+carId+"/users");
+        $scope.users = $firebaseArray(car_firebase);
+      });
+    });
+  })
+
+  .controller("availableCtrl", function($scope, Items, $state, $stateParams, Users, $firebaseObject, $firebaseArray) {
+    var playersRef = new Firebase("https://test-7422a.firebaseio.com/").child("cars");
+    var query = playersRef.orderByChild("active").equalTo(true).limitToLast(10);
+    var list = $firebaseArray(query);
+
+    $scope.$on('$locationChangeStart', function(event) {
+      Items.forEach(function(entry) {
+          var curr = new Date();
+          var timestamp = new Date(entry.timestamp);
+          var leaving_time_compare = new Date(curr.toLocaleDateString() + " " + entry.when);
+          var car_firebase = new Firebase("https://test-7422a.firebaseio.com/cars/" + entry.$id);
+          if(leaving_time_compare > timestamp){ // same day
+            if(curr > leaving_time_compare){
+              car_firebase.update({ 'active': false});
+              // // TODO: remove the currentCar from all users in this car thats active???
+              // but the car could still exist?
+              // // TODO: should you be able to create a car if you're in a car?
+            }
+          } else { // tomorrow
+            var today = new Date();
+            curr.setDate(curr.getDate() - 1);
+            if(curr.toLocaleDateString() == timestamp.toLocaleDateString()){ // is it tomorrow yet?
+              if(today > leaving_time_compare){
+                car_firebase.update({ 'active': false});
+              }
+            }
+          }
+      });
+    });
+
+    $scope.items = list;
+    // $scope.items = Items;
     $scope.new = {};
     $scope.params = $stateParams;
 
@@ -23,6 +71,9 @@ angular.module('app.controllers', [])
       if(Object.keys($scope.new).length != 0){
         var time = new Date($scope.new.when);
         time = time.format("shortTime");
+
+        var date = new Date();
+        var timestamp = date.toLocaleString();
 
         var curr = JSON.parse(document.getElementById('account-details').textContent);
         var ref = new Firebase("https://test-7422a.firebaseio.com/users/" + curr.uid);
@@ -39,6 +90,8 @@ angular.module('app.controllers', [])
           "when": time,
           "from": $scope.new.from,
           "to":   $scope.new.to,
+          "active": true,
+          "timestamp": timestamp,
           "users": {
 
           }
@@ -85,41 +138,82 @@ angular.module('app.controllers', [])
     }
   ])
 
-  .controller('availableCtrl', function($scope, Items, $state) {
-  })
-
   .controller('exampleCtrl',  function($scope, $stateParams, Users, $state, $firebaseObject) {
     $scope.params = $stateParams;
-    console.log($stateParams);
     $scope.users = Users.get($scope.params["info"]["$id"]);
-    console.log($scope.params["info"]["$id"]);
-    $scope.openChat = function() {
+    $scope.showJoin = true;
+    // show or hide button
+    firebase.database().ref('cars/' + $scope.params["info"]["$id"] + '/users').once('value').then(function(snapshot) {
+      var numPeople = snapshot.numChildren();
+      $scope.showLeave = false;
+      if(numPeople < 3){
+        $scope.showJoin = true;
+        $scope.showLeave = false;
+      } else {
+        $scope.showJoin = false;
+        $scope.showLeave = false;
+      }
+      var user = snapshot.val();
       var curr = JSON.parse(document.getElementById('account-details').textContent);
-      var ref = new Firebase("https://test-7422a.firebaseio.com/users/" + curr.uid);
-      var user = $firebaseObject(ref);
-      firebase.database().ref('cars/' + $scope.params["info"]["$id"] + '/users').once('value').then(function(snapshot) {
-        console.log(snapshot.numChildren());
-        var numPeople = snapshot.numChildren();
-        if(numPeople < 3){
-          user.$loaded().then(function() {
-            console.log("loaded record:", user.$id, user.name);
+      for (var key in user) {
+        if(key == curr.uid){
+          $scope.showJoin = false;
+          $scope.showLeave = true;
+        }
+      }
+    });
 
-            $scope.users.$add({
-              "name": user.name,
-              "venmo": user.venmo,
-              "phone": user.phone,
-              "school": user.school,
-              "desc": user.desc,
-              "year": user.year,
-              "img": "img/1.png"
-            });
-         });
-       } else {
-         alert("Sorry this car is full. Please choose another.");
-       }
-      });
-      // $state.go('chat');
+    $scope.openChat = function() {
+      $state.go('chat');
     };
+
+    $scope.join = function() {
+      var curr = JSON.parse(document.getElementById('account-details').textContent);
+      var user = null;
+      firebase.database().ref('users/'+ curr.uid).once('value').then(function(snapshot) {
+        user = snapshot.val();
+      }).then(function() {
+        var car_ref = new Firebase("https://test-7422a.firebaseio.com/cars/" + $scope.params["info"]["$id"] + "/users/" +curr.uid);
+        var addUser = $firebaseObject(car_ref);
+        addUser.name = user.name;
+        addUser.venmo = user.venmo;
+        addUser.phone = user.phone;
+        addUser.school = user.school;
+        addUser.desc = user.desc;
+        addUser.year = user.year;
+        addUser.img = "img/1.png",
+        addUser.$save().then(function () {
+          $scope.showJoin = false;
+          $scope.showLeave = true;
+        });
+
+        var user_firebase = new Firebase("https://test-7422a.firebaseio.com/users/" +curr.uid);
+        user_firebase.update({ 'currentCar': $scope.params["info"]["$id"]});
+
+        firebase.database().ref('cars/' + $scope.params["info"]["$id"] + '/users').once('value').then(function(snapshot) {
+            var numPeople = snapshot.numChildren();
+
+            if(numPeople >= 3){
+              var car_firebase = new Firebase("https://test-7422a.firebaseio.com/cars/" + entry.$id);
+              car_firebase.update({ 'active': false});
+            }
+        });
+      });
+    }
+
+    $scope.leave = function() {
+      var curr = JSON.parse(document.getElementById('account-details').textContent);
+      var car_ref = new Firebase("https://test-7422a.firebaseio.com/cars/" + $scope.params["info"]["$id"] + "/users/" + curr.uid);
+      var car = $firebaseObject(car_ref);
+      car.$remove().then(function(ref) {
+        $scope.showLeave = false;
+        $scope.showJoin = true;
+      });
+
+      var user_firebase = new Firebase("https://test-7422a.firebaseio.com/users/" +curr.uid+ "/currentCar");
+      var user_obj = $firebaseObject(user_firebase);
+      user_obj.$remove();
+    }
   })
 
   .controller('loginCtrl', ['$scope', '$stateParams', '$ionicSideMenuDelegate', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
@@ -159,9 +253,8 @@ angular.module('app.controllers', [])
           user.year = $scope.new_profile.year,
           user.img = null,
           user.$save().then(function () {
-              console.log(user);
+            $state.go('tabsController.available');
           });
-          $state.go('tabsController.available');
         } else{
           alert("Please fill out the form.");
         }

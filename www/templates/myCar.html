@@ -1,4 +1,4 @@
-<ion-view title="Example" id="page5" ng-app="app" ng-controller="exampleCtrl">
+<ion-view title="Example" id="page5" ng-app="app" ng-controller="myCarCtrl">
   <ion-content padding="true" class="has-header">
     <div class="list card" id="example-card21" ng-repeat="user in users">
       <ion-item class="item-avatar" id="example-list-item21">
@@ -16,8 +16,6 @@
       <ion-item class="item-icon-left dark" id="example-list-item23">
         <i class="icon ion-social-usd"></i>{{user.venmo}}</ion-item>
     </div>
-    <button id="example-button15" class="button button-positive button-block" ng-click="join()" ng-show="showJoin">Join</button>
-    <button id="example-button15" class="button button-positive button-block" ng-click="leave()" ng-show="showLeave">Leave</button>
   </ion-content>
 </ion-view>
 

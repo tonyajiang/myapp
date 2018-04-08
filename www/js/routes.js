@@ -9,15 +9,15 @@ angular.module('app.routes', ['ionicUIRouter'])
   $stateProvider
 
 
-  .state('tabsController.welcome', {
-    url: '/page2',
-    views: {
-      'tab1': {
-        templateUrl: 'templates/welcome.html',
-        controller: 'welcomeCtrl'
-      }
-    }
-  })
+  // .state('tabsController.welcome', {
+  //   url: '/page2',
+  //   views: {
+  //     'tab1': {
+  //       templateUrl: 'templates/welcome.html',
+  //       controller: 'welcomeCtrl'
+  //     }
+  //   }
+  // })
 
   /*
     The IonicUIRouter.js UI-Router Modification is being used for this route.
@@ -103,6 +103,16 @@ angular.module('app.routes', ['ionicUIRouter'])
     url: '/page10',
     templateUrl: 'templates/chat.html',
     controller: 'chatCtrl'
+  })
+
+  .state('tabsController.myCar', {
+    url: '/page11',
+    views: {
+      'tab3': {
+        templateUrl: 'templates/myCar.html',
+        controller: 'myCarCtrl'
+      }
+    }
   })
 
 

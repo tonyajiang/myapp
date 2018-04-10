@@ -13,6 +13,14 @@ angular.module('app.services', [])
     }
   }
 })
+.factory("Chats", function($firebaseArray) {
+  return {
+    get: function(id) {
+      var chatsRef = new Firebase("https://test-7422a.firebaseio.com/chats/"+id);
+      return $firebaseArray(chatsRef);
+    }
+  }
+})
 .factory("Profiles", function($firebaseArray) {
   var profiles = new Firebase("https://test-7422a.firebaseio.com/users");
   return $firebaseArray(profiles);

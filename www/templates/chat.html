@@ -1,23 +1,17 @@
 <ion-view title="Chat" id="page10" ng-app="app" ng-controller="chatCtrl">
   <ion-content padding="true" class="has-header">
-    <div class="list">
+    <div class="list" ng-repeat="chat in chats">
       <div class="item">
-        Tonya: hi!
+        {{chat.sender}} : {{chat.content}}
       </div>
-      <div class="item">
-        Kivanc: we're leaving in 10!
-      </div>
-      <div class="item">
-        Tonya: OK on my way!
-      </div>
-      <div class="item item-input-inset">
-        <label class="item-input-wrapper">
-          <input type="text" placeholder="Send message">
-        </label>
-        <button class="button button-small">
-          Send
-        </button>
-      </div>
+    </div>
+    <div class="item item-input-inset">
+      <label class="item-input-wrapper">
+        <input type="text" placeholder="Send message">
+      </label>
+      <button class="button button-small">
+        Send
+      </button>
     </div>
   </ion-content>
 </ion-view>

@@ -32,8 +32,10 @@ angular.module('app', ['ionic', 'firebase', 'app.controllers', 'app.routes', 'ap
    $rootScope.$on('$locationChangeSuccess', function(e) {
      // UserService is an example service for managing user state
      if (UserService.isLoggedIn()) {
+       $rootScope.showMenu = true;
        return;
      } else {
+        $rootScope.showMenu = false;
         $location.path("/page6");
      }
    });

@@ -13,18 +13,9 @@ var initApp = function() {
  firebase.auth().onAuthStateChanged(function(user) {
          if (user) {
            // User is signed in.
-           document.getElementById('menuCtrl').style.visibility = "visible";
            var displayName = user.displayName;
            var email = user.email;
            var emailVerified = user.emailVerified;
-           // if(emailVerified){
-           //   console.log("verified");
-           // } else{
-           //   console.log(emailVerified);
-           // }
-
-           // firebase.auth().currentUser.sendEmailVerification()
-
            var photoURL = user.photoURL;
            var uid = user.uid;
            var phoneNumber = user.phoneNumber;

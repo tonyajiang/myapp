@@ -4,27 +4,27 @@
     <form id="createProfile-form7" class="list">
       <label class="item item-input" id="createProfile-input12">
         <span class="input-label">Name</span>
-        <input type="text" placeholder="" ng-model="new_profile.name">
+        <input type="text" placeholder="" ng-model="new_profile.name" required>
       </label>
       <label class="item item-input" id="createProfile-input12">
         <span class="input-label">Description</span>
-        <input type="text" placeholder="" ng-model="new_profile.desc">
+        <input type="text" placeholder="" ng-model="new_profile.desc" required>
       </label>
       <label class="item item-input" id="createProfile-input13">
         <span class="input-label">Cell Phone</span>
-        <input type="tel" placeholder="" ng-model="new_profile.phone">
+        <input type="tel" placeholder="" ng-model="new_profile.phone" required>
       </label>
       <label class="item item-input" id="createProfile-input12">
         <span class="input-label">Venmo</span>
-        <input type="text" placeholder="" ng-model="new_profile.venmo">
+        <input type="text" placeholder="" ng-model="new_profile.venmo" required>
       </label>
       <label class="item item-input" id="createProfile-input12">
         <span class="input-label">School</span>
-        <input type="text" placeholder="" ng-model="new_profile.school">
+        <input type="text" placeholder="" ng-model="new_profile.school" required>
       </label>
       <label class="item item-input" id="createProfile-input12">
         <span class="input-label">Year</span>
-        <input type="text" placeholder="" ng-model="new_profile.year">
+        <input type="text" placeholder="" ng-model="new_profile.year" required>
       </label>
       <a ui-sref="tabsController.welcome()" id="createProfile-button16" class="button button-positive button-block" ng-click="addProfile()">Done!</a>
     </form>

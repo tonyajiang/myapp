@@ -8,17 +8,6 @@ angular.module('app.routes', ['ionicUIRouter'])
   // Each state's controller can be found in controllers.js
   $stateProvider
 
-
-  // .state('tabsController.welcome', {
-  //   url: '/page2',
-  //   views: {
-  //     'tab1': {
-  //       templateUrl: 'templates/welcome.html',
-  //       controller: 'welcomeCtrl'
-  //     }
-  //   }
-  // })
-
   /*
     The IonicUIRouter.js UI-Router Modification is being used for this route.
     To navigate to this route, do NOT use a URL. Instead use one of the following:
@@ -36,12 +25,16 @@ angular.module('app.routes', ['ionicUIRouter'])
     url: '/page3',
     views: {
       'tab1': {
-        templateUrl: 'templates/create.html',
-        controller: 'createCtrl'
+        templateUrl: 'templates/available.html',
+        controller: 'availableCtrl'
       },
       'tab2': {
         templateUrl: 'templates/create.html',
         controller: 'createCtrl'
+      },
+      'tab3': {
+        templateUrl: 'templates/myCar.html',
+        controller: 'myCarCtrl'
       }
     }
   })
@@ -66,6 +59,10 @@ angular.module('app.routes', ['ionicUIRouter'])
     url: '/page5',
     views: {
       'tab1': {
+        templateUrl: 'templates/example.html',
+        controller: 'exampleCtrl'
+      },
+      'tab3': {
         templateUrl: 'templates/example.html',
         controller: 'exampleCtrl'
       }

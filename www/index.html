@@ -98,7 +98,7 @@
           <ion-nav-bar class="bar-stable">
             <ion-nav-back-button></ion-nav-back-button>
             <ion-nav-buttons side="left">
-              <button class="button button-icon button-clear ion-navicon" menu-toggle="left" id="menuCtrl" style="visibility:hidden"></button>
+              <button class="button button-icon button-clear ion-navicon" menu-toggle="left" id="menuCtrl" ng-show="showMenu"></button>
             </ion-nav-buttons>
           </ion-nav-bar>
           <ion-nav-view></ion-nav-view>
@@ -110,7 +110,7 @@
           <ion-content ng-controller="menuCtrl" padding="false" class="side-menu-left has-header ">
             <ion-list id="menu-list3" data-componentid="list3">
               <ion-item id="menu-list-item18" ui-sref="tabsController.available()" menu-close="" data-componentid="list-item18">Home</ion-item>
-              <ion-item id="menu-list-item14" ui-sref="edit()" menu-close="" data-componentid="list-item14">Account</ion-item>
+              <!-- <ion-item id="menu-list-item14" ui-sref="edit()" menu-close="" data-componentid="list-item14">Account</ion-item> -->
               <ion-item id="menu-list-item15" ui-sref="login()" menu-close="" data-componentid="list-item15">Log Out</ion-item>
               <ion-item id="menu-list-item16" data-componentid="list-item16">Help</ion-item>
               <ion-item id="menu-list-item17" data-componentid="list-item17">Report an Incident</ion-item>

@@ -8,11 +8,29 @@ var uiConfig = {
             var app = firebase.app();
             // var user = app.database().ref('users/' + firebase.auth().currentUser.uid);
             var user = app.database().ref('users/' + firebase.auth().currentUser.uid).once('value').then(function(snapshot){
-              console.log(snapshot.val());
-              if(snapshot.val() == null){
-                window.location.assign('#/page8');
-                return false;
+              var emailVerified = firebase.auth().currentUser.emailVerified;
+              var email = firebase.auth().currentUser.email;
+              var wustl = email.includes("@wustl.edu");
+              if(wustl){
+                if(emailVerified){
+                  if(snapshot.val() == null){
+                    window.location.assign('#/page8');
+                    return false;
+                  }
+                } else{
+                  window.location.assign('#/page12');
+                  firebase.auth().currentUser.sendEmailVerification();
+                  return false;
+                }
+              } else {
+                //// TODO: uncomment for wustl email confirm
+                // firebase.auth().signOut();
+                // alert("Please use a wustl email");
+                // window.location = "/#/page6";
+                // document.getElementById('sign-in-status').textContent = 'Signed out';
+                // document.getElementById('account-details').textContent = 'null';
               }
+
             });
             return true;
           }

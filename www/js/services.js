@@ -20,10 +20,8 @@ angular.module('app.services', [])
 .service('UserService', [function(){
   this.isLoggedIn = function(){
     if(document.getElementById('sign-in-status').textContent == 'Signed in'){
-      console.log(firebase.auth().currentUser.uid);
       var app = firebase.app();
       var user = app.database().ref('users/' + firebase.auth().currentUser.uid);
-      console.log(user);
       return true;
     } else {
       return false;

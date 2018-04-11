@@ -115,6 +115,12 @@ angular.module('app.routes', ['ionicUIRouter'])
     }
   })
 
+  .state('verify', {
+    url: '/page12',
+    templateUrl: 'templates/verify.html',
+    controller: 'verifyCtrl'
+  })
+
 
 $urlRouterProvider.otherwise('/page6')
 

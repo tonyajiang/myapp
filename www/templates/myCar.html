@@ -1,58 +1,23 @@
-<ion-view title="Example" id="page5" ng-app="app" ng-controller="myCarCtrl">
+<ion-view title="My Cars" id="page4" ng-app="app" ng-controller="myCarCtrl">
   <ion-content padding="true" class="has-header">
-    <div class="list card" id="example-card21" ng-repeat="user in users">
-      <ion-item class="item-avatar" id="example-list-item21">
-        <img src={{user.img}}>
-        <h2>{{user.name}}</h2>
-        <p>{{user.year}}, {{user.school}}</p>
-      </ion-item>
-      <div class="item item-body" id="example-list-item-container2">
-        <div id="example-markdown2" class="show-list-numbers-and-dots">
-          <p style="margin-top:0px;color:#000000;">{{user.desc}}</p>
-        </div>
+    <div class="row responsive-sm">
+      <div class="col">
+        <input type="text" placeholder="From" ng-model="find.from">
       </div>
-      <ion-item class="item-icon-left dark" id="example-list-item22">
-        <i class="icon ion-chatboxes"></i>{{user.phone}}</ion-item>
-      <ion-item class="item-icon-left dark" id="example-list-item23">
-        <i class="icon ion-social-usd"></i>{{user.venmo}}</ion-item>
+      <div class="col">
+        <input type="text" placeholder="To" ng-model="find.to">
+      </div>
+      <div class="col">
+        <input type="text" placeholder="When" ng-model="find.when">
+      </div>
     </div>
+    <ion-list id="available-list2">
+      <!-- ui-sref="tabsController.example()" -->
+      <ion-item ng-repeat="item in items | filter : find" ng-click="goToState(item)">
+        Leaving at {{item.when}} - {{item.from}} to {{item.to}}
+      </ion-item>
+    </ion-list>
+    <!-- <h1 id="available-heading5" style="color:#000000;">Can't find one?</h1>
+    <a ui-sref="tabsController.create()" id="available-button8" class="button button-positive button-block">Create!</a> -->
   </ion-content>
 </ion-view>
-
-<!-- <ion-view title="Example" id="page5" ng-app="app" ng-controller="ListCtrl">
-  <ion-content padding="true" class="has-header">
-    <div class="list card" id="example-card21">
-      <ion-item class="item-avatar" id="example-list-item21">
-        <img src="img/XZiKOuBrTveVXbPXDk37_22049818_1702871453119588_6668283513137470507_n.jpg">
-        <h2>Kivanc Komesli</h2>
-        <p>Junior, School of Engineering</p>
-      </ion-item>
-      <div class="item item-body" id="example-list-item-container2">
-        <div id="example-markdown2" class="show-list-numbers-and-dots">
-          <p style="margin-top:0px;color:#000000;">It's like "Crunch" but with a V</p>
-        </div>
-      </div>
-      <ion-item class="item-icon-left dark" id="example-list-item22">
-        <i class="icon ion-chatboxes"></i>(123) 456-7890</ion-item>
-      <ion-item class="item-icon-left dark" id="example-list-item23">
-        <i class="icon ion-social-usd"></i>komeslik</ion-item>
-    </div>
-    <div class="list card" id="example-card22">
-      <ion-item class="item-avatar" id="example-list-item24">
-        <img src="img/UTrMEIwQoi20OXPY0FyD_T24TTK9EU-U4M3LU8BA-54e062e34790-1024.png">
-        <h2>Tonya Jiang</h2>
-        <p>Junior, School of Engineering</p>
-      </ion-item>
-      <div class="item item-body" id="example-list-item-container3">
-        <div id="example-markdown3" class="show-list-numbers-and-dots">
-          <p style="margin-top:0px;color:#000000;">Power moves only</p>
-        </div>
-      </div>
-      <ion-item class="item-icon-left dark" id="example-list-item26">
-        <i class="icon ion-chatboxes"></i>(987) 654-3210</ion-item>
-      <ion-item class="item-icon-left dark" id="example-list-item27">
-        <i class="icon ion-social-usd"></i>Tonya-Jiang</ion-item>
-    </div>
-    <button id="example-button15" class="button button-positive button-block" ng-click="joinCar()">Join</button>
-  </ion-content>
-</ion-view> -->

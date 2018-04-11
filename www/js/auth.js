@@ -17,6 +17,14 @@ var initApp = function() {
            var displayName = user.displayName;
            var email = user.email;
            var emailVerified = user.emailVerified;
+           // if(emailVerified){
+           //   console.log("verified");
+           // } else{
+           //   console.log(emailVerified);
+           // }
+
+           // firebase.auth().currentUser.sendEmailVerification()
+
            var photoURL = user.photoURL;
            var uid = user.uid;
            var phoneNumber = user.phoneNumber;
@@ -43,6 +51,5 @@ var initApp = function() {
          }
        });
 };
-
 
 window.addEventListener('load', initApp);

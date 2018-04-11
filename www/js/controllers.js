@@ -10,26 +10,28 @@ angular.module('app.controllers', [])
     }
   ])
 
-  .controller('welcomeCtrl', function($scope, $state) {
+  .controller('verifyCtrl', function($scope, $state) {
+    $scope.logout = function() {
+      firebase.auth().signOut();
+      window.location = "/#/page6";
+      document.getElementById('sign-in-status').textContent = 'Signed out';
+      document.getElementById('account-details').textContent = 'null';
+    }
+    $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
+      viewData.enableBack = false;
+    });
   })
 
   .controller('myCarCtrl', function($scope, $state, $firebaseObject, $firebaseArray) {
-    var curr = JSON.parse(document.getElementById('account-details').textContent);
-    firebase.database().ref('users/'+ curr.uid).once('value').then(function(snapshot) {
-      var carId = snapshot.val().currentCar;
-      var car_firebase = new Firebase("https://test-7422a.firebaseio.com/cars/"+carId+"/users");
-      $scope.users = $firebaseArray(car_firebase);
-    });
-
-    $scope.$on('$locationChangeStart', function(event) {
       var curr = JSON.parse(document.getElementById('account-details').textContent);
-      firebase.database().ref('users/'+ curr.uid).once('value').then(function(snapshot) {
-        var carId = snapshot.val().currentCar;
-        var car_firebase = new Firebase("https://test-7422a.firebaseio.com/cars/"+carId+"/users");
-        $scope.users = $firebaseArray(car_firebase);
-      });
-    });
-  })
+
+      var currentCars  = new Firebase("https://test-7422a.firebaseio.com/users/"+curr.uid+"/currentCars");
+      $scope.items = $firebaseArray(currentCars);
+      $scope.goToState = function(info){
+        $scope.id = info["$id"];
+        $state.go('tabsController.example', { info });
+      }
+    })
 
   .controller("availableCtrl", function($scope, Items, $state, $stateParams, Users, $firebaseObject, $firebaseArray) {
     var playersRef = new Firebase("https://test-7422a.firebaseio.com/").child("cars");
@@ -45,9 +47,11 @@ angular.module('app.controllers', [])
           if(leaving_time_compare > timestamp){ // same day
             if(curr > leaving_time_compare){
               car_firebase.update({ 'active': false});
-              // // TODO: remove the currentCar from all users in this car thats active???
-              // but the car could still exist?
-              // // TODO: should you be able to create a car if you're in a car?
+              // 5. // TODO: USER TESTING (WEDNESDAY)
+              // 6. // TODO: ratings + review system
+              // 7. // TODO: USER TESTING (SATURDAY)
+              // 8. // TODO: research notifications
+              // 9. // TODO: research downloading into an app
             }
           } else { // tomorrow
             var today = new Date();
@@ -65,7 +69,7 @@ angular.module('app.controllers', [])
     // $scope.items = Items;
     $scope.new = {};
     $scope.params = $stateParams;
-
+    var curr = JSON.parse(document.getElementById('account-details').textContent);
     $scope.addItem = function() {
       console.log($scope.new);
       if(Object.keys($scope.new).length != 0){
@@ -92,12 +96,11 @@ angular.module('app.controllers', [])
           "to":   $scope.new.to,
           "active": true,
           "timestamp": timestamp,
+          "owner": curr.uid,
           "users": {
-
           }
        }).then(function(ref) {
           var id = ref.key();
-          var curr = JSON.parse(document.getElementById('account-details').textContent);
           var car_ref = new Firebase("https://test-7422a.firebaseio.com/cars/" + id + "/users/" +curr.uid);
           var curr_user_ref = new Firebase("https://test-7422a.firebaseio.com/users/" + curr.uid);
           var user = $firebaseObject(curr_user_ref);
@@ -116,6 +119,14 @@ angular.module('app.controllers', [])
                   });
 
           });
+
+          var currentCars = new Firebase('https://test-7422a.firebaseio.com/users/'+ curr.uid + '/currentCars');
+          firebase.database().ref('cars/' + id).once('value').then(function(snapshot) {
+              var jsonVariable = {};
+              jsonVariable[id] = snapshot.val();
+              var newCurrentCarRef = currentCars.update(jsonVariable);
+          });
+
         });
        $state.go('tabsController.available');
       } else{
@@ -138,30 +149,43 @@ angular.module('app.controllers', [])
     }
   ])
 
-  .controller('exampleCtrl',  function($scope, $stateParams, Users, $state, $firebaseObject) {
+  .controller('exampleCtrl',  function($scope, $stateParams, Users, $state, $firebaseObject, $firebaseArray) {
     $scope.params = $stateParams;
     $scope.users = Users.get($scope.params["info"]["$id"]);
     $scope.showJoin = true;
-    // show or hide button
-    firebase.database().ref('cars/' + $scope.params["info"]["$id"] + '/users').once('value').then(function(snapshot) {
-      var numPeople = snapshot.numChildren();
-      $scope.showLeave = false;
-      if(numPeople < 3){
-        $scope.showJoin = true;
+    $scope.showDelete = false;
+    $scope.title = $scope.params.info.from + " - " + $scope.params.info.to;
+
+    // set up
+    var curr = JSON.parse(document.getElementById('account-details').textContent);
+    firebase.database().ref('cars/' + $scope.params["info"]["$id"]).once('value').then(function(snapshot) {
+      var car = snapshot.val();
+      var owner = car.owner;
+      // show or hide button
+      firebase.database().ref('cars/' + $scope.params["info"]["$id"] + '/users').once('value').then(function(snapshot) {
+        var numPeople = snapshot.numChildren();
         $scope.showLeave = false;
-      } else {
-        $scope.showJoin = false;
-        $scope.showLeave = false;
-      }
-      var user = snapshot.val();
-      var curr = JSON.parse(document.getElementById('account-details').textContent);
-      for (var key in user) {
-        if(key == curr.uid){
+        if(numPeople < 3){
+          $scope.showJoin = true;
+          $scope.showLeave = false;
+        } else {
           $scope.showJoin = false;
-          $scope.showLeave = true;
+          $scope.showLeave = false;
         }
-      }
+        var user = snapshot.val();
+
+        for (var key in user) {
+          if(key == curr.uid){
+            $scope.showJoin = false;
+            $scope.showLeave = true;
+            if(key == owner){
+              $scope.showDelete = true;
+            }
+          }
+        }
+      });
     });
+    //
 
     $scope.openChat = function() {
       $state.go('chat');
@@ -173,6 +197,7 @@ angular.module('app.controllers', [])
       firebase.database().ref('users/'+ curr.uid).once('value').then(function(snapshot) {
         user = snapshot.val();
       }).then(function() {
+        var randomizer = Math.floor((Math.random() * 3) + 1);
         var car_ref = new Firebase("https://test-7422a.firebaseio.com/cars/" + $scope.params["info"]["$id"] + "/users/" +curr.uid);
         var addUser = $firebaseObject(car_ref);
         addUser.name = user.name;
@@ -181,14 +206,21 @@ angular.module('app.controllers', [])
         addUser.school = user.school;
         addUser.desc = user.desc;
         addUser.year = user.year;
-        addUser.img = "img/1.png",
+        addUser.img = "img/"+randomizer+".png",
         addUser.$save().then(function () {
           $scope.showJoin = false;
           $scope.showLeave = true;
         });
 
-        var user_firebase = new Firebase("https://test-7422a.firebaseio.com/users/" +curr.uid);
-        user_firebase.update({ 'currentCar': $scope.params["info"]["$id"]});
+        var currentCars = new Firebase('https://test-7422a.firebaseio.com/users/'+ curr.uid + '/currentCars');
+        firebase.database().ref('cars/' + $scope.params["info"]["$id"]).once('value').then(function(snapshot) {
+            var id = $scope.params["info"]["$id"];
+            var jsonVariable = {};
+            jsonVariable[id] = snapshot.val();
+            var newCurrentCarRef = currentCars.update(jsonVariable);
+        });
+
+
 
         firebase.database().ref('cars/' + $scope.params["info"]["$id"] + '/users').once('value').then(function(snapshot) {
             var numPeople = snapshot.numChildren();
@@ -208,12 +240,26 @@ angular.module('app.controllers', [])
       car.$remove().then(function(ref) {
         $scope.showLeave = false;
         $scope.showJoin = true;
+        $scope.showDelete = false;
       });
 
-      var user_firebase = new Firebase("https://test-7422a.firebaseio.com/users/" +curr.uid+ "/currentCar");
+      var user_firebase = new Firebase("https://test-7422a.firebaseio.com/users/" +curr.uid+ "/currentCars/" + $scope.params["info"]["$id"]);
       var user_obj = $firebaseObject(user_firebase);
       user_obj.$remove();
     }
+
+    $scope.delete = function(){
+      var user_ref = new Firebase("https://test-7422a.firebaseio.com/users/" + curr.uid + "/currentCars/" +$scope.params["info"]["$id"]);
+      var user = $firebaseObject(user_ref);
+      user.$remove();
+
+      var car_ref = new Firebase("https://test-7422a.firebaseio.com/cars/" + $scope.params["info"]["$id"]);
+      var car = $firebaseObject(car_ref);
+      car.$remove().then(function(ref) {
+        window.location.assign('#/page1/page4');
+      });
+    }
+
   })
 
   .controller('loginCtrl', ['$scope', '$stateParams', '$ionicSideMenuDelegate', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller

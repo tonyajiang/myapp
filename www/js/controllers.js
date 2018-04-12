@@ -300,6 +300,10 @@ angular.module('app.controllers', [])
     $scope.openChat = function() {
       $state.go('chat');
     };
+    $scope.addItem  =  function(){
+      var curr = JSON.parse(document.getElementById('account-details').textContent);
+    };
+    
     var curr = JSON.parse(document.getElementById('account-details').textContent);
     firebase.database().ref('users/' + curr.uid).once('value').then(function(snapshot) {
       var carId = snapshot.val().currentCar;
@@ -308,7 +312,7 @@ angular.module('app.controllers', [])
     });
 
     $scope.$on('$locationChangeStart', function(event) {
-      var curr = JSON.parse(document.getElementById('account-details').textContent);
+      // var curr = JSON.parse(document.getElementById('account-details').textContent);
       firebase.database().ref('users/' + curr.uid).once('value').then(function(snapshot) {
         var carId = snapshot.val().currentCar;
         var chat_firebase = new Firebase("https://test-7422a.firebaseio.com/chats/" + carId);

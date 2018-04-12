@@ -188,8 +188,8 @@ angular.module('app.controllers', [])
     });
     //
 
-    $scope.openChat = function() {
-      $state.go('chat');
+    $scope.openChat = function(carInfo) {
+        $state.go('chat', {carInfo});
     };
 
     $scope.join = function() {
@@ -312,13 +312,26 @@ angular.module('app.controllers', [])
     }
   ])
 
-  .controller('chatCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-    // You can include any angular dependencies as parameters for this function
-    // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function($scope, $stateParams) {
-      $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
-        viewData.enableBack = true;
-      });
+ .controller('chatCtrl', function($scope, $state, $stateParams, $firebaseObject, $firebaseArray) {
+    $scope.params = $stateParams;
+    console.log($stateParams.carInfo.info.$id);
+    $scope.addItem  =  function(){
+      var curr = JSON.parse(document.getElementById('account-details').textContent);
+    };
+    
+    var curr = JSON.parse(document.getElementById('account-details').textContent);
+    firebase.database().ref('users/' + curr.uid).once('value').then(function(snapshot) {
+      var carId = $stateParams.carInfo.info.$id;
+      var chat_firebase = new Firebase("https://test-7422a.firebaseio.com/chats/" + carId);
+      $scope.chats = $firebaseArray(chat_firebase);
+    });
 
-    }
-  ])
+    $scope.$on('$locationChangeStart', function(event) {
+      // var curr = JSON.parse(document.getElementById('account-details').textContent);
+      firebase.database().ref('users/' + curr.uid).once('value').then(function(snapshot) {
+        var carId = $stateParams.carInfo.info.$id;
+        var chat_firebase = new Firebase("https://test-7422a.firebaseio.com/chats/" + carId);
+        $scope.chats = $firebaseArray(chat_firebase);
+      });
+    });
+  })

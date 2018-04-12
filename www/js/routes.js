@@ -99,7 +99,10 @@ angular.module('app.routes', ['ionicUIRouter'])
   .state('chat', {
     url: '/page10',
     templateUrl: 'templates/chat.html',
-    controller: 'chatCtrl'
+    controller: 'chatCtrl',
+    params: {
+       carInfo : null
+   }
   })
 
   .state('tabsController.myCar', {

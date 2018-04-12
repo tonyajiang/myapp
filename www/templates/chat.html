@@ -7,9 +7,9 @@
     </ion-list>
     <div class="item item-input-inset">
       <label class="item-input-wrapper">
-        <input type="text" placeholder="Send message">
+        <input type="text" placeholder="Send message" ng-model="newChat">
       </label>
-      <button class="button button-small" ng-click="sendChat()">
+      <button class="button button-small" ng-click="sendChat(newChat)">
          <i class="icon ion-android-send"></i>
       </button>
     </div>

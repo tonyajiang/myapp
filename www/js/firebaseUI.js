@@ -43,7 +43,8 @@ var uiConfig = {
   signInOptions: [
     firebase.auth.EmailAuthProvider.PROVIDER_ID
   ],
-  credentialHelper: firebaseui.auth.CredentialHelper.NONE
+  // credentialHelper: firebaseui.auth.CredentialHelper.NONE
+  credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO
 };
 
 // Initialize the FirebaseUI Widget using Firebase.

@@ -311,10 +311,15 @@ angular.module('app.controllers', [])
   ])
 
   .controller('chatCtrl', function($scope, $state, $stateParams, $firebaseObject, $firebaseArray) {
+    $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
+        viewData.enableBack = true;
+      });
     $scope.params = $stateParams;
     var carId = $stateParams.carInfo.info.$id;
     console.log($stateParams.carInfo.info.$id);
     $scope.sendChat = function(newChat) {
+      var carId = $stateParams.carInfo.info.$id;
+      console.log($stateParams.carInfo.info.$id);
       var curr = JSON.parse(document.getElementById('account-details').textContent);
       console.log(curr);
       var chatRef = new Firebase("https://test-7422a.firebaseio.com/chats/" + carId);
@@ -335,7 +340,15 @@ angular.module('app.controllers', [])
     $scope.$on('$locationChangeStart', function(event) {
       // var curr = JSON.parse(document.getElementById('account-details').textContent);
       firebase.database().ref('users/' + curr.uid).once('value').then(function(snapshot) {
-        var carId = $stateParams.carInfo.info.$id;
+        console.log($stateParams);
+        var carId;
+        var carInfoHere = $stateParams.carInfo;
+        if(carInfoHere==null){
+          carId = $stateParams.info.$id;
+        }else{
+          carId = $stateParams.carInfo.info.$id;
+        }
+        // var carId = $stateParams.carInfo.info.$id;
         var chat_firebase = new Firebase("https://test-7422a.firebaseio.com/chats/" + carId);
         $scope.chats = $firebaseArray(chat_firebase);
       });

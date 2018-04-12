@@ -35,6 +35,30 @@ angular.module('app.controllers', [])
     })
 
   .controller("availableCtrl", function($scope, Items, $state, $stateParams, Users, $firebaseObject, $firebaseArray) {
+    Items.forEach(function(entry) {
+        var curr = new Date();
+        var timestamp = new Date(entry.timestamp);
+        var leaving_time_compare = new Date(curr.toLocaleDateString() + " " + entry.when);
+        var car_firebase = new Firebase("https://test-7422a.firebaseio.com/cars/" + entry.$id);
+        if(leaving_time_compare > timestamp){ // same day
+          if(curr > leaving_time_compare){
+            car_firebase.update({ 'active': false});
+            // 5. // TODO: USER TESTING (WEDNESDAY)
+            // 6. // TODO: ratings + review system
+            // 7. // TODO: USER TESTING (SATURDAY)
+            // 8. // TODO: research notifications
+            // 9. // TODO: research downloading into an app
+          }
+        } else { // tomorrow
+          var today = new Date();
+          curr.setDate(curr.getDate() - 1);
+          if(curr.toLocaleDateString() == timestamp.toLocaleDateString()){ // is it tomorrow yet?
+            if(today > leaving_time_compare){
+              car_firebase.update({ 'active': false});
+            }
+          }
+        }
+    });
     $scope.$on('$locationChangeStart', function(event) {
       Items.forEach(function(entry) {
           var curr = new Date();
@@ -44,11 +68,6 @@ angular.module('app.controllers', [])
           if(leaving_time_compare > timestamp){ // same day
             if(curr > leaving_time_compare){
               car_firebase.update({ 'active': false});
-              // 5. // TODO: USER TESTING (WEDNESDAY)
-              // 6. // TODO: ratings + review system
-              // 7. // TODO: USER TESTING (SATURDAY)
-              // 8. // TODO: research notifications
-              // 9. // TODO: research downloading into an app
             }
           } else { // tomorrow
             var today = new Date();
@@ -150,10 +169,7 @@ angular.module('app.controllers', [])
 
   .controller('exampleCtrl',  function($scope, $stateParams, Users, $state, $firebaseObject, $firebaseArray) {
     $scope.params = $stateParams;
-    // $scope.users = Users.get($scope.params["info"]["$id"]);
-    // $scope.showJoin = false;
-    // $scope.showDelete = false;
-    // $scope.title = $scope.params.info.from + " - " + $scope.params.info.to;
+    $scope.title = $scope.params.info.from + " - " + $scope.params.info.to;
 
     // set up
     var curr = JSON.parse(document.getElementById('account-details').textContent);
@@ -162,7 +178,6 @@ angular.module('app.controllers', [])
       $scope.showJoin = false;
       $scope.showLeave = false;
       $scope.showDelete = false;
-      $scope.title = $scope.params.info.from + " - " + $scope.params.info.to;
       var car = snapshot.val();
       var owner = car.owner;
       // show or hide button
@@ -220,17 +235,6 @@ angular.module('app.controllers', [])
             jsonVariable[id] = snapshot.val();
             var newCurrentCarRef = currentCars.update(jsonVariable);
         });
-
-
-
-        // firebase.database().ref('cars/' + $scope.params["info"]["$id"] + '/users').once('value').then(function(snapshot) {
-        //     var numPeople = snapshot.numChildren();
-        //
-        //     if(numPeople >= 3){
-        //       var car_firebase = new Firebase("https://test-7422a.firebaseio.com/cars/" + entry.$id);
-        //       car_firebase.update({ 'active': false });
-        //     }
-        // });
       });
     }
 

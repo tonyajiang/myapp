@@ -53,4 +53,4 @@ var ui = new firebaseui.auth.AuthUI(firebase.auth());
 
 ui.start('#firebaseui', uiConfig);
 
-ui.disableAutoSignIn();
+// ui.disableAutoSignIn();

@@ -328,6 +328,7 @@ angular.module('app.controllers', [])
         'content': newChat,
         'sender': curr.displayName
       });
+      document.getElementById('newChatInput').value = '';
     };
 
     var curr = JSON.parse(document.getElementById('account-details').textContent);

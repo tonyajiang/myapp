@@ -23,7 +23,7 @@ angular.module('app.controllers', [])
 
   .controller('myCarCtrl', function($scope, $state, $firebaseObject, $firebaseArray) {
     // delete from own copy of my cars after its expired
-    var curr = JSON.parse(document.getElementById('account-details').textContent);
+    var curr = firebase.auth().currentUser;
 
     var currentCars = new Firebase("https://test-7422a.firebaseio.com/users/" + curr.uid + "/currentCars");
     $scope.items = $firebaseArray(currentCars);
@@ -34,6 +34,28 @@ angular.module('app.controllers', [])
   })
 
   .controller("availableCtrl", function($scope, Items, $state, $stateParams, Users, $firebaseObject, $firebaseArray) {
+    $scope.$on('$ionicView.beforeEnter', function(event) {
+      Items.forEach(function(entry) {
+        var curr = new Date();
+        var timestamp = new Date(entry.timestamp);
+        var leaving_time_compare = new Date(curr.toLocaleDateString() + " " + entry.when);
+        var car_firebase = new Firebase("https://test-7422a.firebaseio.com/cars/" + entry.$id);
+        if (leaving_time_compare > timestamp) { // same day
+          if (curr > leaving_time_compare) {
+            car_firebase.update({ 'active': false });
+          }
+        } else { // tomorrow
+          var today = new Date();
+          curr.setDate(curr.getDate() - 1);
+          if (curr.toLocaleDateString() == timestamp.toLocaleDateString()) { // is it tomorrow yet?
+            if (today > leaving_time_compare) {
+              car_firebase.update({ 'active': false });
+            }
+          }
+        }
+      });
+    });
+
     $scope.$on('$locationChangeStart', function(event) {
       Items.forEach(function(entry) {
         var curr = new Date();
@@ -43,11 +65,6 @@ angular.module('app.controllers', [])
         if (leaving_time_compare > timestamp) { // same day
           if (curr > leaving_time_compare) {
             car_firebase.update({ 'active': false });
-            // 5. // TODO: USER TESTING (WEDNESDAY)
-            // 6. // TODO: ratings + review system
-            // 7. // TODO: USER TESTING (SATURDAY)
-            // 8. // TODO: research notifications
-            // 9. // TODO: research downloading into an app
           }
         } else { // tomorrow
           var today = new Date();
@@ -67,9 +84,9 @@ angular.module('app.controllers', [])
     // $scope.items = Items;
     $scope.new = {};
     $scope.params = $stateParams;
-    var curr = JSON.parse(document.getElementById('account-details').textContent);
+    // var curr = JSON.parse(document.getElementById('account-details').textContent);
+    var curr = firebase.auth().currentUser;
     $scope.addItem = function() {
-      console.log($scope.new);
       if (Object.keys($scope.new).length != 0) {
         var time = new Date($scope.new.when);
         time = time.format("shortTime");
@@ -77,7 +94,7 @@ angular.module('app.controllers', [])
         var date = new Date();
         var timestamp = date.toLocaleString();
 
-        var curr = JSON.parse(document.getElementById('account-details').textContent);
+        var curr = firebase.auth().currentUser;
         var ref = new Firebase("https://test-7422a.firebaseio.com/users/" + curr.uid);
         var user = $firebaseObject(ref);
 
@@ -148,13 +165,10 @@ angular.module('app.controllers', [])
 
   .controller('exampleCtrl', function($scope, $stateParams, Users, $state, $firebaseObject, $firebaseArray) {
     $scope.params = $stateParams;
-    // $scope.users = Users.get($scope.params["info"]["$id"]);
-    // $scope.showJoin = false;
-    // $scope.showDelete = false;
-    // $scope.title = $scope.params.info.from + " - " + $scope.params.info.to;
+    $scope.title = $scope.params.info.from + " - " + $scope.params.info.to;
 
     // set up
-    var curr = JSON.parse(document.getElementById('account-details').textContent);
+    var curr = firebase.auth().currentUser;
     firebase.database().ref('cars/' + $scope.params["info"]["$id"]).once('value').then(function(snapshot) {
       $scope.users = Users.get($scope.params["info"]["$id"]);
       $scope.showJoin = false;
@@ -191,7 +205,7 @@ angular.module('app.controllers', [])
     };
 
     $scope.join = function() {
-      var curr = JSON.parse(document.getElementById('account-details').textContent);
+      var curr = firebase.auth().currentUser;
       var user = null;
       firebase.database().ref('users/' + curr.uid).once('value').then(function(snapshot) {
         user = snapshot.val();
@@ -218,22 +232,11 @@ angular.module('app.controllers', [])
           jsonVariable[id] = snapshot.val();
           var newCurrentCarRef = currentCars.update(jsonVariable);
         });
-
-
-
-        // firebase.database().ref('cars/' + $scope.params["info"]["$id"] + '/users').once('value').then(function(snapshot) {
-        //     var numPeople = snapshot.numChildren();
-        //
-        //     if(numPeople >= 3){
-        //       var car_firebase = new Firebase("https://test-7422a.firebaseio.com/cars/" + entry.$id);
-        //       car_firebase.update({ 'active': false });
-        //     }
-        // });
       });
     }
 
     $scope.leave = function() {
-      var curr = JSON.parse(document.getElementById('account-details').textContent);
+      var curr = firebase.auth().currentUser;
       var car_ref = new Firebase("https://test-7422a.firebaseio.com/cars/" + $scope.params["info"]["$id"] + "/users/" + curr.uid);
       var car = $firebaseObject(car_ref);
       car.$remove().then(function(ref) {
@@ -281,7 +284,7 @@ angular.module('app.controllers', [])
 
       $scope.addProfile = function() {
         if (Object.keys($scope.new_profile).length != 0) {
-          var curr = JSON.parse(document.getElementById('account-details').textContent);
+          var curr = firebase.auth().currentUser;
           var ref = new Firebase("https://test-7422a.firebaseio.com/users/" + curr.uid);
           var user = $firebaseObject(ref);
           user.name = $scope.new_profile.name;
@@ -320,7 +323,7 @@ angular.module('app.controllers', [])
     $scope.sendChat = function(newChat) {
       var carId = $stateParams.carInfo.info.$id;
       console.log($stateParams.carInfo.info.$id);
-      var curr = JSON.parse(document.getElementById('account-details').textContent);
+      var curr = firebase.auth().currentUser;
       console.log(curr);
       var chatRef = new Firebase("https://test-7422a.firebaseio.com/chats/" + carId);
       var newMessageRef = chatRef.push();
@@ -331,7 +334,7 @@ angular.module('app.controllers', [])
       document.getElementById('newChatInput').value = '';
     };
 
-    var curr = JSON.parse(document.getElementById('account-details').textContent);
+    var curr = firebase.auth().currentUser;
     firebase.database().ref('users/' + curr.uid).once('value').then(function(snapshot) {
       var carId = $stateParams.carInfo.info.$id;
       var chat_firebase = new Firebase("https://test-7422a.firebaseio.com/chats/" + carId);
@@ -339,7 +342,6 @@ angular.module('app.controllers', [])
     });
 
     $scope.$on('$locationChangeStart', function(event) {
-      // var curr = JSON.parse(document.getElementById('account-details').textContent);
       firebase.database().ref('users/' + curr.uid).once('value').then(function(snapshot) {
         console.log($stateParams);
         var carId;
@@ -349,7 +351,6 @@ angular.module('app.controllers', [])
         }else{
           carId = $stateParams.carInfo.info.$id;
         }
-        // var carId = $stateParams.carInfo.info.$id;
         var chat_firebase = new Firebase("https://test-7422a.firebaseio.com/chats/" + carId);
         $scope.chats = $firebaseArray(chat_firebase);
       });

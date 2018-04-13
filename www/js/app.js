@@ -36,7 +36,7 @@ angular.module('app', ['ionic', 'firebase', 'app.controllers', 'app.routes', 'ap
        return;
      } else {
         $rootScope.showMenu = false;
-        $location.path("/page6");
+        // $location.path("/page6");
      }
    });
 

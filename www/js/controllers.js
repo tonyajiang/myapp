@@ -165,8 +165,8 @@ angular.module('app.controllers', [])
 
   .controller('exampleCtrl', function($scope, $stateParams, Users, $state, $firebaseObject, $firebaseArray) {
     $scope.params = $stateParams;
-    $scope.title = $scope.params.info.from + " - " + $scope.params.info.to;
-
+    $scope.title = $scope.params.info.from + " -> " + $scope.params.info.to;
+    $scope.details = $scope.params.info.when;
     // set up
     var curr = firebase.auth().currentUser;
     firebase.database().ref('cars/' + $scope.params["info"]["$id"]).once('value').then(function(snapshot) {
@@ -254,6 +254,7 @@ angular.module('app.controllers', [])
       var user_ref = new Firebase("https://test-7422a.firebaseio.com/users/" + curr.uid + "/currentCars/" + $scope.params["info"]["$id"]);
       var user = $firebaseObject(user_ref);
       user.$remove();
+      $state.go('tabsController.myCar');
     }
 
   })

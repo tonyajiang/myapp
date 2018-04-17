@@ -1,5 +1,9 @@
-<ion-view title={{title}} id="page5" ng-app="app" ng-controller="exampleCtrl">
+<ion-view title="" id="page5" ng-app="app" ng-controller="exampleCtrl">
   <ion-content padding="true" class="has-header">
+    <h1>{{title}}</h1>
+    <h2>Leaving {{details}}</h2>
+    <button id="chat-button" class="button button-positive button-block" ng-click="openChat({{params}})" ng-show="showLeave || showDelete">Go To Chat</button>
+    <h3>People in the car:</h3>
     <div class="list card" id="example-card21" ng-repeat="user in users">
       <ion-item class="item" id="example-list-item21">
         <!-- <img src={{user.img}}> -->
@@ -16,10 +20,11 @@
       <ion-item class="item-icon-left dark" id="example-list-item23">
         <i class="icon ion-social-usd"></i>{{user.venmo}}</ion-item>
     </div>
+
     <button id="example-button15" class="button button-positive button-block" ng-click="join()" ng-show="showJoin">Join</button>
     <button id="example-button15" class="button button-positive button-block" ng-click="leave()" ng-show="showLeave">Leave</button>
     <button id="example-button15" class="button button-positive button-block" ng-click="delete()" ng-show="showDelete">Delete</button>
-    <button id="chat-button" class="button button-positive button-block" ng-click="openChat({{params}})" ng-show="showLeave || showDelete">Go To Chat</button>
+
   </ion-content>
 </ion-view>
 

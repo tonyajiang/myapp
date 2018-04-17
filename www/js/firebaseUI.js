@@ -24,11 +24,11 @@ var uiConfig = {
                 }
               } else {
                 //// TODO: uncomment for wustl email confirm
-                // firebase.auth().signOut();
-                // alert("Please use a wustl email");
-                // window.location = "/#/page6";
-                // document.getElementById('sign-in-status').textContent = 'Signed out';
-                // document.getElementById('account-details').textContent = 'null';
+                firebase.auth().signOut();
+                alert("Please use a wustl email");
+                window.location = "/#/page6";
+                document.getElementById('sign-in-status').textContent = 'Signed out';
+                document.getElementById('account-details').textContent = 'null';
               }
 
             });

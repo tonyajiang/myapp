@@ -1,16 +1,40 @@
 <ion-view title="My Cars" id="page4" ng-app="app" ng-controller="myCarCtrl">
   <ion-content padding="true" class="has-header">
     <div class="row responsive-sm">
+      <h3>Filter</h3>
       <div class="col">
-        <input type="text" placeholder="From" ng-model="find.from">
+        <!-- <input type="text" placeholder="From" ng-model="find.from"> -->
+        <label class="item item-input item-select">
+          <div class="input-label">
+            From
+          </div>
+          <select ng-model="find.from">
+            <option></option>
+            <option>Clock Tower</option>
+            <option>Village</option>
+          </select>
+        </label>
       </div>
       <div class="col">
-        <input type="text" placeholder="To" ng-model="find.to">
+        <!-- <input type="text" placeholder="To" ng-model="find.to"> -->
+        <label class="item item-input item-select">
+          <div class="input-label">
+            To
+          </div>
+          <select ng-model="find.to">
+            <option></option>
+            <option>Clock Tower</option>
+            <option>Village</option>
+          </select>
+        </label>
       </div>
       <div class="col">
-        <input type="text" placeholder="When" ng-model="find.when">
+        <label class="item item-input">
+          <input type="text" placeholder="When" ng-model="find.when">
+        </label>
       </div>
     </div>
+    <hr style="margin-bottom: 20px;">
     <ion-list id="available-list2">
       <!-- ui-sref="tabsController.example()" -->
       <ion-item ng-repeat="item in items | filter : find" ng-click="goToState(item)">

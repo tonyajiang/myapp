@@ -1,19 +1,20 @@
 <ion-view title="Chat" id="page10" ng-app="app" ng-controller="chatCtrl">
   <ion-content padding="true" class="has-header">
     <ion-list id="available-list2">
-      <ion-item ng-repeat="chat in chats"> 
+      <ion-item ng-repeat="chat in chats">
         <b>{{chat.sender}}:</b> {{chat.content}}
       </ion-item>
     </ion-list>
-    <div class="item item-input-inset">
-      <label class="item-input-wrapper">
-        <input type="text" id="newChatInput" placeholder="Send message" ng-model="newChat">
-      </label>
-      <button class="button button-small" ng-click="sendChat(newChat)">
-         <i class="icon ion-android-send"></i>
-      </button>
-    </div>
+
   </ion-content>
+  <div class="item item-input-inset" style="position: fixed; bottom: 0px; width: 100%">
+    <label class="item-input-wrapper">
+      <input type="text" id="newChatInput" placeholder="Send message" ng-model="newChat">
+    </label>
+    <button class="button button-small" ng-click="sendChat(newChat)">
+      <i class="icon ion-android-send"></i>
+    </button>
+  </div>
 </ion-view>
 <!-- <ion-view title="Example" id="page5" ng-app="app" ng-controller="ListCtrl">
   <ion-content padding="true" class="has-header">
